@@ -1,0 +1,11 @@
+{
+  "name": "Hand Sign Translator",
+  "description": "Real-time American Sign Language fingerspelling translator powered by 21 3D hand landmarks, 63-dimensional normalization, and neural inference with speech synthesis.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
