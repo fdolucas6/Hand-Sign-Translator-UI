@@ -4,6 +4,7 @@ import { TextAccumulator } from './TextAccumulator';
 import { TelemetryBar } from './TelemetryBar';
 import { MiniAlphabetReference } from './MiniAlphabetReference';
 import { SignDetailModal } from '../guide/SignDetailModal';
+import { AslAlphabetChartModal } from '../guide/AslAlphabetChartModal';
 import { fastApiService } from '../../services/api';
 import { speechService } from '../../services/speech';
 import { normalizeLandmarks } from '../../services/normalization';
@@ -57,6 +58,7 @@ export const TranslatorPage: React.FC<TranslatorPageProps> = ({
 
   // Selected letter modal
   const [selectedGuideLetter, setSelectedGuideLetter] = useState<AlphabetGuideItem | null>(null);
+  const [isChartModalOpen, setIsChartModalOpen] = useState(false);
 
   const debounceTarget = 5;
   const confidenceThreshold = 0.70;
@@ -284,6 +286,7 @@ export const TranslatorPage: React.FC<TranslatorPageProps> = ({
 
           <MiniAlphabetReference
             onSelectLetter={(letter) => setSelectedGuideLetter(letter)}
+            onOpenChart={() => setIsChartModalOpen(true)}
             activeLetter={currentSign}
           />
         </div>
@@ -296,6 +299,16 @@ export const TranslatorPage: React.FC<TranslatorPageProps> = ({
         onPractice={(letter) => {
           setSelectedGuideLetter(null);
           onOpenPractice(letter);
+        }}
+      />
+
+      {/* ASL Alphabet Chart Modal (Matching Screenshot) */}
+      <AslAlphabetChartModal
+        isOpen={isChartModalOpen}
+        onClose={() => setIsChartModalOpen(false)}
+        onSelectLetter={(letter) => {
+          setIsChartModalOpen(false);
+          setSelectedGuideLetter(letter);
         }}
       />
     </div>

@@ -58,8 +58,15 @@ export const DetectionPill: React.FC<DetectionPillProps> = ({
           : 'bg-[#FFFBEB]/95 border-[#D97706] text-slate-900'
       }`}
     >
-      {/* Letter Token Glyph */}
-      <div className="flex items-center gap-1.5">
+      {/* Letter Token Glyph & Hand Sign Sketch */}
+      <div className="flex items-center gap-2">
+        <div className="w-7 h-7 rounded-full overflow-hidden bg-[#FEFDE8] border border-amber-300 shadow-2xs flex-shrink-0 p-0.5">
+          <img
+            src={`/asl-sketches/${detectedSign}.svg`}
+            alt={`Sign ${detectedSign}`}
+            className="w-full h-full object-contain"
+          />
+        </div>
         <span className="w-7 h-7 rounded-full bg-white shadow-xs border border-slate-200/80 flex items-center justify-center font-extrabold text-base text-slate-950 font-heading">
           {detectedSign}
         </span>

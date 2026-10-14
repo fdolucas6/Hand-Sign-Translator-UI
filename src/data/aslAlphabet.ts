@@ -1,6 +1,6 @@
 import { AlphabetGuideItem } from '../types/asl';
 
-export const ASL_ALPHABET: AlphabetGuideItem[] = [
+const RAW_ALPHABET: AlphabetGuideItem[] = [
   {
     letter: 'A',
     name: 'Letter A',
@@ -395,3 +395,9 @@ export const ASL_ALPHABET: AlphabetGuideItem[] = [
     svgPath: 'M 35 35 L 65 35 L 35 70 L 65 70'
   }
 ];
+
+export const ASL_ALPHABET: AlphabetGuideItem[] = RAW_ALPHABET.map((item) => ({
+  ...item,
+  image: `/asl-sketches/${item.letter}.svg`,
+}));
+

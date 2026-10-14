@@ -7,7 +7,7 @@
 import { ApiConnectionConfig, ConnectionStatus, Landmark3D, PredictionResponse } from '../types/asl';
 
 const DEFAULT_CONFIG: ApiConnectionConfig = {
-  baseUrl: (import.meta.env.VITE_API_URL as string) || 'http://localhost:8000',
+  baseUrl: (import.meta.env.VITE_API_URL as string) || 'http://127.0.0.1:8000',
   useWebSocket: false,
   pollingIntervalMs: 50,
   confidenceThreshold: 0.70,
@@ -20,7 +20,12 @@ export function loadSavedApiConfig(): ApiConnectionConfig {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      return { ...DEFAULT_CONFIG, ...JSON.parse(raw) };
+      const parsed = JSON.parse(raw);
+      // Migrate legacy localhost:8000 to fast 127.0.0.1:8000 if needed
+      if (parsed.baseUrl === 'http://localhost:8000') {
+        parsed.baseUrl = 'http://127.0.0.1:8000';
+      }
+      return { ...DEFAULT_CONFIG, ...parsed };
     }
   } catch {
     // fallback to defaults
@@ -112,7 +117,7 @@ class FastApiService {
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      const timeoutId = setTimeout(() => controller.abort(), 2000);
 
       let response: Response;
       try {
@@ -121,13 +126,13 @@ class FastApiService {
           signal: controller.signal,
           headers: { Accept: 'application/json' },
         });
-      } catch (err: any) {
-        // Fallback to GET / root if /health is not defined
-        response = await fetch(cleanUrl, {
-          method: 'GET',
-          signal: controller.signal,
-          headers: { Accept: 'application/json' },
-        });
+        if (response.status === 404) {
+          response = await fetch(cleanUrl, {
+            method: 'GET',
+            signal: controller.signal,
+            headers: { Accept: 'application/json' },
+          });
+        }
       } finally {
         clearTimeout(timeoutId);
       }

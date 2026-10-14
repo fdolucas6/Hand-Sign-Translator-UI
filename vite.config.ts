@@ -14,6 +14,8 @@ export default defineConfig({
     },
   },
   server: {
+    host: '::',
+    port: 3000,
     // Preserve the existing AI Studio HMR behavior.
     hmr: process.env.DISABLE_HMR !== 'true',
     watch: process.env.DISABLE_HMR === 'true' ? null : {},

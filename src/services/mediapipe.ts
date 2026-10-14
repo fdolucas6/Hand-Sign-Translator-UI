@@ -26,22 +26,25 @@ export class MediaPipeHandTracker {
   private cameraInstance: any = null;
   private isInitialized = false;
   private isProcessing = false;
+  private initPromise: Promise<boolean> | null = null;
   private onLandmarksCallback: ((result: LandmarkFrameResult | null) => void) | null = null;
 
   public async initialize(): Promise<boolean> {
     if (this.isInitialized) return true;
+    if (this.initPromise) return this.initPromise;
 
-    // Check if window.Hands is ready or load dynamically
-    if (typeof window === 'undefined') return false;
+    this.initPromise = (async () => {
+      // Check if window.Hands is ready or load dynamically
+      if (typeof window === 'undefined') return false;
 
-    if (!window.Hands) {
-      await this.loadScript('https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js');
-    }
+      if (!window.Hands) {
+        await this.loadScript('https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js');
+      }
 
-    if (!window.Hands) {
-      console.warn('[MediaPipe] Hands SDK could not be loaded from CDN');
-      return false;
-    }
+      if (!window.Hands) {
+        console.warn('[MediaPipe] Hands SDK could not be loaded from CDN');
+        return false;
+      }
 
     try {
       this.handsInstance = new window.Hands({
@@ -94,7 +97,10 @@ export class MediaPipeHandTracker {
       console.error('[MediaPipe] Failed to initialize hands', e);
       return false;
     }
-  }
+  })();
+
+  return this.initPromise;
+}
 
   private loadScript(src: string): Promise<boolean> {
     return new Promise((resolve) => {
@@ -218,5 +224,6 @@ export class MediaPipeHandTracker {
       this.handsInstance = null;
     }
     this.isInitialized = false;
+    this.initPromise = null;
   }
 }

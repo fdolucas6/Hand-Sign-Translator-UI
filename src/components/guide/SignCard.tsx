@@ -38,17 +38,24 @@ export const SignCard: React.FC<SignCardProps> = ({ item, onSelect, onPractice }
           </span>
         </div>
 
-        {/* Hand Graphic / SVG Representation */}
-        <div className="h-32 bg-[#faf8ff] rounded-xl border border-slate-100 flex items-center justify-center p-3 relative overflow-hidden group-hover:bg-blue-50/30 transition-colors">
-          <svg
-            viewBox="0 0 100 100"
-            className="w-24 h-24 stroke-blue-600 fill-none stroke-[3] stroke-linecap-round stroke-linejoin-round"
-          >
-            {/* Guide circle */}
-            <circle cx="50" cy="50" r="42" className="stroke-slate-200/60 stroke-1 stroke-dashed" />
-            <path d={item.svgPath} />
-          </svg>
-          <span className="absolute bottom-1.5 right-2 text-[10px] font-mono text-slate-400 bg-white/80 px-1.5 py-0.5 rounded">
+        {/* Hand-Drawn Sketch Representation (Matching ASL Chart Style) */}
+        <div className="h-56 bg-[#FFFFE0] rounded-xl border border-[#D1D2D3] flex flex-col items-center justify-between p-3.5 relative overflow-hidden group-hover:border-slate-400 group-hover:shadow-md transition-all">
+          <div className="w-full flex-1 flex items-center justify-center min-h-0 pt-1">
+            <img
+              src={item.image || `/asl-sketches/${item.letter}.svg`}
+              alt={`ASL Hand Sketch for Letter ${item.letter}`}
+              className="max-h-36 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          </div>
+
+          <div className="w-full text-center pt-2 pb-1 border-t border-[#E8E8C8]/60">
+            <span className="text-4xl sm:text-5xl font-medium font-sans text-[#3C4043] leading-none select-none block">
+              {item.letter}
+            </span>
+          </div>
+
+          <span className="absolute top-2 right-2 text-[10px] font-mono text-slate-500 bg-white/90 backdrop-blur-xs px-2 py-0.5 rounded border border-slate-200 shadow-2xs">
             {item.palmOrientation}
           </span>
         </div>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { X, Video, AlertCircle, CheckCircle, Lightbulb } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Video, AlertCircle, CheckCircle, Lightbulb, Image as ImageIcon, Sparkles } from 'lucide-react';
 import { AlphabetGuideItem } from '../../types/asl';
 
 interface SignDetailModalProps {
@@ -13,6 +13,8 @@ export const SignDetailModal: React.FC<SignDetailModalProps> = ({
   onClose,
   onPractice,
 }) => {
+  const [viewMode, setViewMode] = useState<'sketch' | 'landmark'>('sketch');
+
   if (!item) return null;
 
   return (
@@ -50,26 +52,69 @@ export const SignDetailModal: React.FC<SignDetailModalProps> = ({
 
         {/* Content */}
         <div className="p-6 overflow-y-auto space-y-5">
-          {/* Hand Illustration Display */}
+          {/* Hand Sketch Display */}
           <div className="flex flex-col sm:flex-row items-center gap-5 p-4 rounded-xl bg-slate-50 border border-slate-200">
-            <div className="w-32 h-32 bg-white rounded-xl border border-slate-200 flex items-center justify-center flex-shrink-0 shadow-xs">
-              <svg
-                viewBox="0 0 100 100"
-                className="w-24 h-24 stroke-blue-600 fill-none stroke-[3] stroke-linecap-round stroke-linejoin-round"
-              >
-                <circle cx="50" cy="50" r="42" className="stroke-slate-200 stroke-1 stroke-dashed" />
-                <path d={item.svgPath} />
-              </svg>
+            <div className="relative w-44 h-52 bg-[#FFFFE0] rounded-xl border border-[#D1D2D3] overflow-hidden flex flex-col items-center justify-between flex-shrink-0 shadow-xs p-3">
+              <div className="w-full flex-1 flex items-center justify-center min-h-0 pt-1">
+                {viewMode === 'sketch' ? (
+                  <img
+                    src={item.image || `/asl-sketches/${item.letter}.svg`}
+                    alt={`ASL Hand Sketch for Letter ${item.letter}`}
+                    className="max-h-32 w-auto object-contain"
+                  />
+                ) : (
+                  <svg
+                    viewBox="0 0 100 100"
+                    className="w-24 h-24 stroke-blue-600 fill-none stroke-[3] stroke-linecap-round stroke-linejoin-round"
+                  >
+                    <circle cx="50" cy="50" r="42" className="stroke-slate-300 stroke-1 stroke-dashed" />
+                    <path d={item.svgPath} />
+                  </svg>
+                )}
+              </div>
+
+              {viewMode === 'sketch' && (
+                <div className="w-full text-center pb-5 pt-1.5 border-t border-[#E8E8C8]/60">
+                  <span className="text-4xl font-medium font-sans text-[#3C4043] leading-none select-none block">
+                    {item.letter}
+                  </span>
+                </div>
+              )}
+
+              {/* View Switcher Overlay */}
+              <div className="absolute bottom-1 inset-x-1 flex justify-center">
+                <div className="bg-slate-900/85 backdrop-blur-xs rounded-lg p-0.5 border border-slate-700 flex gap-0.5 text-[9px] font-mono shadow-xs">
+                  <button
+                    onClick={() => setViewMode('sketch')}
+                    className={`px-1.5 py-0.5 rounded transition ${
+                      viewMode === 'sketch' ? 'bg-blue-600 text-white font-bold' : 'text-slate-300 hover:text-white'
+                    }`}
+                  >
+                    Hand Sketch
+                  </button>
+                  <button
+                    onClick={() => setViewMode('landmark')}
+                    className={`px-1.5 py-0.5 rounded transition ${
+                      viewMode === 'landmark' ? 'bg-blue-600 text-white font-bold' : 'text-slate-300 hover:text-white'
+                    }`}
+                  >
+                    Wireframe
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className="space-y-2">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono">
-                Posture Breakdown
+
+            <div className="space-y-2 flex-1">
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                <ImageIcon className="w-3.5 h-3.5 text-blue-600" />
+                Hand Sketch Illustration
               </span>
               <p className="text-xs text-slate-700 leading-relaxed">
                 {item.description}
               </p>
             </div>
           </div>
+
 
           {/* Finger Positions List */}
           <div className="space-y-2">

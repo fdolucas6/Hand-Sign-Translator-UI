@@ -82,6 +82,24 @@ export interface AlphabetGuideItem {
   palmOrientation: 'Forward' | 'Inward' | 'Sideways';
   confusedWith: string[];
   svgPath: string;
+  image?: string;
+}
+
+export function getSignImageUrl(sign: string): string {
+  if (!sign || sign === 'NO_SIGN') return '/asl-sketches/nothing.svg';
+  const clean = sign.trim();
+  if (clean.toLowerCase() === 'space') return '/asl-sketches/space.svg';
+  if (clean.toLowerCase() === 'del') return '/asl-sketches/del.svg';
+  return `/asl-sketches/${clean.toUpperCase()}.svg`;
+}
+
+export function getSignReferencePhotoUrl(sign: string): string {
+  if (!sign || sign === 'NO_SIGN') return '/asl-signs/nothing.jpg';
+  const clean = sign.trim();
+  if (clean.toLowerCase() === 'space') return '/asl-signs/space.jpg';
+  if (clean.toLowerCase() === 'del') return '/asl-signs/del.jpg';
+  return `/asl-signs/${clean.toUpperCase()}.jpg`;
 }
 
 export type ActivePage = 'translator' | 'guide' | 'how-it-works' | 'about';
+

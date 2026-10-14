@@ -152,20 +152,34 @@ export const PracticeModal: React.FC<PracticeModalProps> = ({
 
           {/* Right: Reference Guide & Checklist */}
           <div className="md:col-span-5 space-y-4">
-            {/* Reference Image */}
+            {/* Reference Hand Sketch */}
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono block mb-2">
-                Target Hand Pose
-              </span>
-              <div className="w-24 h-24 mx-auto bg-white rounded-xl border border-slate-200 flex items-center justify-center shadow-xs">
-                <svg
-                  viewBox="0 0 100 100"
-                  className="w-18 h-18 stroke-blue-600 fill-none stroke-[3] stroke-linecap-round stroke-linejoin-round"
-                >
-                  <circle cx="50" cy="50" r="42" className="stroke-slate-200 stroke-1 stroke-dashed" />
-                  <path d={item.svgPath} />
-                </svg>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider font-mono">
+                  Target ASL Hand Sketch
+                </span>
+                <span className="text-[10px] font-bold bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-heading">
+                  Letter {item.letter}
+                </span>
               </div>
+              <div className="w-36 h-48 mx-auto bg-[#FFFFE0] rounded-xl border border-[#D1D2D3] overflow-hidden shadow-xs relative flex flex-col items-center justify-between p-3">
+                <div className="w-full flex-1 flex items-center justify-center min-h-0 pt-1">
+                  <img
+                    src={item.image || `/asl-sketches/${item.letter}.svg`}
+                    alt={`ASL Hand Sketch for Letter ${item.letter}`}
+                    className="max-h-28 w-auto object-contain"
+                  />
+                </div>
+                <div className="w-full text-center pb-1 pt-1.5 border-t border-[#E8E8C8]/60">
+                  <span className="text-3xl font-medium font-sans text-[#3C4043] leading-none block select-none">
+                    {item.letter}
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-[11px] text-slate-500 mt-2 font-mono">
+                Match your live webcam posture to this hand sign
+              </p>
             </div>
 
             {/* Checklist */}

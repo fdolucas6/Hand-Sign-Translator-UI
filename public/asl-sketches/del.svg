@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Clean light sketchpad background -->
+  <rect width="100" height="100" fill="#ffffff" rx="12"/>
+  
+  <g stroke="#1e293b" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<!-- Del: Hand open with thumb pointing backwards -->
+    <path d="M 40 88 L 38 68 C 36 60 30 58 20 58 C 14 58 14 50 20 50 L 40 50 L 42 28 C 42 22 50 22 50 28 L 50 50 L 52 26 C 52 20 60 20 60 26 L 60 50 C 62 48 68 49 72 54 C 76 60 75 70 71 78 C 68 84 64 86 60 88 Z" fill="#fafafa" stroke="#1e293b" stroke-width="2.6"/>
+    <!-- Back arrow for delete -->
+    <path d="M 32 40 L 16 40 L 22 34 M 16 40 L 22 46" stroke="#ef4444" stroke-width="2.2"/>
+    <path d="M 40 82 C 48 84 57 83 65 81" stroke="#334155" stroke-width="1.5"/>
+  </g>
+</svg>

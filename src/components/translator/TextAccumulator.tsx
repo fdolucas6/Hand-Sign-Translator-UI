@@ -77,6 +77,22 @@ export const TextAccumulator: React.FC<TextAccumulatorProps> = ({
             )}
           </div>
 
+          {/* Reference Hand Sign Sketch for Detected Alphabet */}
+          {currentSign && currentSign !== 'NO_SIGN' && (
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border border-amber-200/90 bg-[#FEFDE8] shadow-sm flex-shrink-0 animate-fade-in p-1 flex items-center justify-center">
+              <img
+                src={`/asl-sketches/${currentSign}.svg`}
+                alt={`Hand Sketch ${currentSign}`}
+                className="w-full h-full object-contain"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-slate-900/80 backdrop-blur-xs py-0.5 text-center">
+                <span className="text-[9px] font-mono font-bold text-white uppercase tracking-wider block">
+                  Sign {currentSign}
+                </span>
+              </div>
+            </div>
+          )}
+
           <div className="space-y-1">
             <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider font-mono">
               ACTIVE DETECTED TOKEN

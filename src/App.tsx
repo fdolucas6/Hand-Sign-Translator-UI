@@ -39,10 +39,11 @@ export default function App() {
       setApiError(error);
     });
 
-    // Check periodically if offline
+    // Check periodically if config baseUrl changed
     const interval = setInterval(() => {
-      if (fastApiService.getConfig()) {
-        setBaseUrl(fastApiService.getConfig().baseUrl);
+      const current = fastApiService.getConfig()?.baseUrl;
+      if (current) {
+        setBaseUrl((prev) => (prev !== current ? current : prev));
       }
     }, 2000);
 

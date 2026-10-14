@@ -1,9 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Filter, BookOpen, Layers } from 'lucide-react';
+import { Search, Filter, BookOpen, Layers, LayoutGrid } from 'lucide-react';
 import { ASL_ALPHABET } from '../../data/aslAlphabet';
 import { AlphabetGuideItem, ActivePage } from '../../types/asl';
 import { SignCard } from './SignCard';
 import { SignDetailModal } from './SignDetailModal';
+import { AslAlphabetChartModal } from './AslAlphabetChartModal';
 
 interface SignGuidePageProps {
   onNavigate: (page: ActivePage) => void;
@@ -15,6 +16,7 @@ export const SignGuidePage: React.FC<SignGuidePageProps> = ({ onNavigate, onOpen
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('All');
   const [selectedOrientation, setSelectedOrientation] = useState<string>('All');
   const [activeSignModal, setActiveSignModal] = useState<AlphabetGuideItem | null>(null);
+  const [isChartModalOpen, setIsChartModalOpen] = useState(false);
 
   const filteredAlphabet = useMemo(() => {
     return ASL_ALPHABET.filter((item) => {
@@ -125,6 +127,14 @@ export const SignGuidePage: React.FC<SignGuidePageProps> = ({ onNavigate, onOpen
               <option value="Sideways">Palm Sideways (1)</option>
             </select>
           </div>
+
+          <button
+            onClick={() => setIsChartModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FFFFE0] hover:bg-[#fffec4] text-slate-800 border border-[#D1D2D3] text-xs font-semibold shadow-2xs transition hover:border-slate-400"
+          >
+            <LayoutGrid className="w-3.5 h-3.5 text-slate-600" />
+            <span>ASL Alphabet Chart</span>
+          </button>
         </div>
       </div>
 
@@ -189,6 +199,16 @@ export const SignGuidePage: React.FC<SignGuidePageProps> = ({ onNavigate, onOpen
         onPractice={(sig) => {
           setActiveSignModal(null);
           onOpenPractice(sig);
+        }}
+      />
+
+      {/* ASL Alphabet Chart Modal (Matching Exact Screenshot) */}
+      <AslAlphabetChartModal
+        isOpen={isChartModalOpen}
+        onClose={() => setIsChartModalOpen(false)}
+        onSelectLetter={(sig) => {
+          setIsChartModalOpen(false);
+          setActiveSignModal(sig);
         }}
       />
     </div>

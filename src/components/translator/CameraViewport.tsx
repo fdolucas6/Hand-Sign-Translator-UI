@@ -48,7 +48,29 @@ export const CameraViewport: React.FC<CameraViewportProps> = ({
   const [resolution, setResolution] = useState<{ width: number; height: number }>({ width: 640, height: 480 });
   const [hasHand, setHasHand] = useState(false);
 
-  // Setup tracker instance
+  // Mutable refs to prevent tracker teardown/re-creation on UI state changes
+  const onLandmarksExtractedRef = useRef(onLandmarksExtracted);
+  const showSkeletonRef = useRef(showSkeleton);
+  const isMirroredRef = useRef(isMirrored);
+  const isStableRef = useRef(isStable);
+
+  useEffect(() => {
+    onLandmarksExtractedRef.current = onLandmarksExtracted;
+  }, [onLandmarksExtracted]);
+
+  useEffect(() => {
+    showSkeletonRef.current = showSkeleton;
+  }, [showSkeleton]);
+
+  useEffect(() => {
+    isMirroredRef.current = isMirrored;
+  }, [isMirrored]);
+
+  useEffect(() => {
+    isStableRef.current = isStable;
+  }, [isStable]);
+
+  // Setup tracker instance once on mount
   useEffect(() => {
     const tracker = new MediaPipeHandTracker();
     trackerRef.current = tracker;
@@ -61,17 +83,17 @@ export const CameraViewport: React.FC<CameraViewportProps> = ({
 
     tracker.onLandmarks((result) => {
       setHasHand(!!result);
-      onLandmarksExtracted(result);
+      onLandmarksExtractedRef.current(result);
 
       // Render skeletal lines onto canvas overlay
       const canvas = canvasRef.current;
-      if (canvas && result && showSkeleton) {
+      if (canvas && result && showSkeletonRef.current) {
         const ctx = canvas.getContext('2d');
         if (ctx) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           tracker.drawSkeleton(ctx, result.landmarks, canvas.width, canvas.height, {
-            mirror: isMirrored,
-            primaryColor: isStable ? '#10b981' : '#06b6d4',
+            mirror: isMirroredRef.current,
+            primaryColor: isStableRef.current ? '#10b981' : '#06b6d4',
             jointColor: '#ffffff',
           });
         }
@@ -87,7 +109,7 @@ export const CameraViewport: React.FC<CameraViewportProps> = ({
       tracker.destroy();
       trackerRef.current = null;
     };
-  }, [onLandmarksExtracted, showSkeleton, isMirrored, isStable]);
+  }, []);
 
   // Request camera stream
   const startCamera = useCallback(async (deviceId?: string) => {
